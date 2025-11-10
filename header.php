@@ -14,7 +14,6 @@
             <nav>
                 <ul>
                     <li><a href="index.php">Home</a></li>
-                    <li><a href="animals.php">Adopt</a></li>
                     <?php if (isset($_SESSION['loggedin'])): ?>
                         <li><a href="volunteer.php">Volunteer</a></li>
                         <li><a href="report.php">Report</a></li>

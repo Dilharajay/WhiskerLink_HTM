@@ -7,14 +7,14 @@
             <div class="contact-info">
                 <h3>Shelter Information</h3>
                 <p><strong>Main Shelter:</strong><br>
-                123 Rescue Rd.<br>
-                Anytown, USA 12345</p>
+                    Cross Streat 02,<br>
+                    Colombo, Sri Lanka</p>
                 <p><strong>Email:</strong> contact@whiskerlink.org</p>
                 <p><strong>Phone:</strong> (123) 456-7890</p>
-                
+
                 <h3>Hours of Operation</h3>
                 <p>Monday - Friday: 10am - 6pm<br>
-                Saturday - Sunday: 10am - 4pm</p>
+                    Saturday - Sunday: 10am - 4pm</p>
             </div>
             <div class="contact-form">
                 <h3>Send us a Message</h3>

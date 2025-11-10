@@ -19,7 +19,7 @@
         <div class="card-grid">
             <!-- Placeholder Animal 1 -->
             <div class="card">
-                <img src="https://placekitten.com/300/200" alt="Cute kitten">
+                <img src="https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg" alt="Cute kitten">
                 <div class="card-content">
                     <h3>Buddy</h3>
                     <p>Friendly and playful. Loves cuddles!</p>
@@ -37,7 +37,7 @@
             </div>
             <!-- Placeholder Animal 3 -->
             <div class="card">
-                <img src="https://placekitten.com/300/201" alt="Another cute kitten">
+                <img src="https://images.pexels.com/photos/15534058/pexels-photo-15534058.jpeg" alt="Another cute kitten">
                 <div class="card-content">
                     <h3>Smokey</h3>
                     <p>Curious and independent. Will be your best friend.</p>
@@ -49,13 +49,13 @@
 </section>
 
 <?php if (isset($_SESSION['loggedin'])): ?>
-<section id="cta-section" style="text-align: center; padding: 2rem 0; background-color: var(--secondary-color);">
-    <div class="container">
-        <h2>Have you found a lost or stray animal?</h2>
-        <p>You can help by reporting it to us. Your report can save a life.</p>
-        <a href="report.php" class="btn btn-accent">Report an Animal</a>
-    </div>
-</section>
+    <section id="cta-section" style="text-align: center; padding: 2rem 0; background-color: var(--secondary-color);">
+        <div class="container">
+            <h2>Have you found a lost or stray animal?</h2>
+            <p>You can help by reporting it to us. Your report can save a life.</p>
+            <a href="report.php" class="btn btn-accent">Report an Animal</a>
+        </div>
+    </section>
 <?php endif; ?>
 
 <?php include 'footer.php'; ?>
