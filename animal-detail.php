@@ -44,7 +44,7 @@
                 <p>A friendly and playful companion who loves cuddles and long walks in the park. Buddy is great with kids and other dogs. He is looking for a forever home with a loving family.</p>
                 <ul>
                     <li><strong>Breed:</strong> Golden Retriever</li>
-                    <li><strong>Age:</strong> 2 years</li>
+                    <li><strong>Age:</strong> 3 years</li>
                     <li><strong>Sex:</strong> Male</li>
                     <li><strong>Health:</strong> Vaccinated, Neutered</li>
                     <li><strong>Location:</strong> City Shelter</li>
