@@ -20,7 +20,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     <li><a href="index.php">Home</a></li>
                     <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
                         <a href="dashboard.php">Dashboard</a>
-                        <a href="animals.php">Animals</a>
+                        <a href="rescue-reports.php">Animals</a>
                         <a href="volunteer.php">Volunteer</a>
                         <a href="report.php">Report</a>
                         <a href="logout.php">Logout</a>
