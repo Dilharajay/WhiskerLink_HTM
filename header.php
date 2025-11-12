@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,15 +18,17 @@
             <nav>
                 <ul>
                     <li><a href="index.php">Home</a></li>
-                    <?php if (isset($_SESSION['loggedin'])): ?>
-                        <li><a href="volunteer.php">Volunteer</a></li>
-                        <li><a href="report.php">Report</a></li>
-                        <li><a href="dashboard.php">My Dashboard</a></li>
-                        <li><a href="logout.php">Logout</a></li>
+                    <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
+                        <a href="dashboard.php">Dashboard</a>
+                        <a href="animals.php">Animals</a>
+                        <a href="volunteer.php">Volunteer</a>
+                        <a href="report.php">Report</a>
+                        <a href="logout.php">Logout</a>
                     <?php else: ?>
-                        <li><a href="login.php">Login</a></li>
-                        <li><a href="register.php">Register</a></li>
+                        <a href="login.php">Login</a>
+                        <a href="register.php">Register</a>
                     <?php endif; ?>
+
                     <li><a href="contact.php">Contact</a></li>
                 </ul>
             </nav>

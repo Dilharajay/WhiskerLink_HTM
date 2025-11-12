@@ -1,10 +1,14 @@
-<?php include 'header.php'; ?>
+<?php 
+session_start(); // Add this at the very top
+include 'header.php'; 
+?>
 
 <section id="hero" style="text-align: center; padding: 4rem 0; background-color: var(--primary-color); color: var(--white-color);">
     <div class="container">
         <h1>Welcome to Animal Rescue Connect</h1>
         <p>Connecting hearts, one paw at a time.</p>
-        <?php if (isset($_SESSION['loggedin'])): ?>
+        <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
+            <p style="margin-bottom: 1rem;">Welcome back, <?php echo htmlspecialchars($_SESSION['fullname'] ?? $_SESSION['username']); ?>!</p>
             <a href="animals.php" class="btn btn-accent">Find a Friend</a>
             <a href="volunteer.php" class="btn btn-secondary">Become a Volunteer</a>
         <?php else: ?>
@@ -48,7 +52,7 @@
     </div>
 </section>
 
-<?php if (isset($_SESSION['loggedin'])): ?>
+<?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
     <section id="cta-section" style="text-align: center; padding: 2rem 0; background-color: var(--secondary-color);">
         <div class="container">
             <h2>Have you found a lost or stray animal?</h2>
