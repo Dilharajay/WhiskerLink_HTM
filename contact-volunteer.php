@@ -29,7 +29,7 @@ if ($application_id <= 0) {
 $stmt = $conn->prepare("SELECT va.*, u.fullname, u.email, u.phone, u.address 
                         FROM Volunteer_Application va 
                         INNER JOIN users u ON va.user_id = u.user_id 
-                        WHERE va.application_id = ? AND va.status = 'Approved'");
+                        WHERE va.application_id = ? AND va.status = 'Pending'");
 $stmt->bind_param("i", $application_id);
 $stmt->execute();
 $result = $stmt->get_result();
