@@ -274,10 +274,19 @@ $conn->close();
 <!-- EmailJS SDK -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
+<!-- Optional: Load config file (if you created js/emailjs-config.js) -->
+<!-- <script src="js/emailjs-config.js"></script> -->
+
 <script>
-    // Initialize EmailJS with your Public Key
-    // Replace 'YOUR_PUBLIC_KEY' with your actual EmailJS public key
-    emailjs.init('yP_HfFyjDVtRWmq6d');
+    // EmailJS Configuration (inline version)
+    const emailConfig = {
+        publicKey: 'yP_HfFyjDVtRWmq6d',
+        serviceId: 'service_cuwcftc',
+        templateId: 'template_nn1rjgt'
+    };
+    
+    // Initialize EmailJS
+    emailjs.init(emailConfig.publicKey);
     
     // Character counter for subject
     const subjectInput = document.getElementById('subject');
@@ -294,6 +303,29 @@ $conn->close();
     messageInput.addEventListener('input', function() {
         messageCount.textContent = this.value.length;
     });
+    
+    // Helper function to get error message
+    function getErrorMessage(error) {
+        if (!error) return 'Unknown error occurred';
+        
+        const errorText = error.text || error.message || '';
+        
+        if (errorText.includes('insufficient authentication scopes')) {
+            return 'Email service authentication error. Please contact the administrator to reconnect the email service.';
+        } else if (errorText.includes('Invalid API key') || errorText.includes('public_key')) {
+            return 'Email service configuration error. Please contact support.';
+        } else if (errorText.includes('Template not found')) {
+            return 'Email template error. Please contact support.';
+        } else if (errorText.includes('Rate limit') || errorText.includes('Too Many Requests')) {
+            return 'Too many emails sent. Please try again in a few minutes.';
+        } else if (errorText.includes('Network') || errorText.includes('Failed to fetch')) {
+            return 'Network error. Please check your internet connection and try again.';
+        } else if (errorText) {
+            return 'Error: ' + errorText;
+        } else {
+            return 'Failed to send message. Please try again or contact support.';
+        }
+    }
     
     // Form submission handler
     document.getElementById('contactForm').addEventListener('submit', function(e) {
@@ -312,10 +344,9 @@ $conn->close();
         errorAlert.style.display = 'none';
         
         // Send email using EmailJS
-        // Replace 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' with your actual IDs
-        emailjs.sendForm('service_cuwcftc', 'template_nn1rjgt', this)
+        emailjs.sendForm(emailConfig.serviceId, emailConfig.templateId, this)
             .then(function(response) {
-                console.log('SUCCESS!', response.status, response.text);
+                console.log('✅ SUCCESS!', response.status, response.text);
                 
                 // Show success message
                 document.getElementById('successMessage').textContent = 
@@ -335,20 +366,10 @@ $conn->close();
                 submitBtn.innerHTML = '📧 Send Message';
                 
             }, function(error) {
-                console.log('FAILED...', error);
+                console.error('❌ FAILED...', error);
                 
-                // Show error message with more details
-                let errorMsg = 'Failed to send message. ';
-                
-                if (error.text && error.text.includes('insufficient authentication scopes')) {
-                    errorMsg += 'Email service authentication error. Please contact the administrator to reconnect the email service.';
-                } else if (error.text) {
-                    errorMsg += 'Error: ' + error.text;
-                } else {
-                    errorMsg += 'Please try again or contact support.';
-                }
-                
-                document.getElementById('errorMessage').textContent = errorMsg;
+                // Show error message
+                document.getElementById('errorMessage').textContent = getErrorMessage(error);
                 errorAlert.style.display = 'block';
                 
                 // Re-enable button
