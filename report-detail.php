@@ -215,13 +215,33 @@ $report = $result->fetch_assoc();
                 <div class="contact-section">
                     <h3>Emergency Contact Information</h3>
                     <?php if (!empty($report['emergency_name'])): ?>
-                        <p><strong>Contact Name:</strong> <?php echo htmlspecialchars($report['emergency_name']); ?></p>
+                        <p style="margin-bottom: 12px;">
+                            <strong>👤 Contact Name:</strong> 
+                            <?php echo htmlspecialchars($report['emergency_name']); ?>
+                        </p>
                     <?php endif; ?>
-                    <?php if (!empty($report['emegency_no'])): ?>
-                        <p><strong>Contact Info:</strong> <?php echo htmlspecialchars($report['emegency_no']); ?></p>
-                    <?php endif; ?>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 12px;">
+                        <?php if (!empty($report['emegency_no'])): ?>
+                            <p style="margin: 0; padding: 12px; background: white; border-radius: 6px;">
+                                <strong>📞 Phone:</strong><br>
+                                <span style="color: #333; font-size: 15px;"><?php echo htmlspecialchars($report['emegency_no']); ?></span>
+                            </p>
+                        <?php endif; ?>
+                        
+                        <?php if (!empty($report['reporter_email'])): ?>
+                            <p style="margin: 0; padding: 12px; background: white; border-radius: 6px;">
+                                <strong>📧 Email:</strong><br>
+                                <span style="color: #333; font-size: 15px; word-break: break-all;"><?php echo htmlspecialchars($report['reporter_email']); ?></span>
+                            </p>
+                        <?php endif; ?>
+                    </div>
+                    
                     <?php if (!empty($report['reporter_name'])): ?>
-                        <p><strong>Reporter:</strong> <?php echo htmlspecialchars($report['reporter_name']); ?></p>
+                        <p style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #f0ad4e;">
+                            <strong>📝 Reported by:</strong> 
+                            <?php echo htmlspecialchars($report['reporter_name']); ?>
+                        </p>
                     <?php endif; ?>
                 </div>
                 

@@ -6,11 +6,11 @@ include 'db.php';
 $filter_type = isset($_GET['type']) ? $_GET['type'] : 'all';
 $search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
 
-// Build SQL query with filters
+// Build SQL query with filters - only show "Under Review" reports
 $sql = "SELECT rr.*, u.fullname as reporter_name 
         FROM Rescue_Report rr 
         LEFT JOIN users u ON rr.reporter_id = u.user_id 
-        WHERE 1=1";
+        WHERE rr.report_status = 'Under Review'";
 
 $params = array();
 $types = "";
