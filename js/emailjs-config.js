@@ -49,11 +49,11 @@ const EmailJSConfig = {
     validate: function() {
         const errors = [];
         
-        if (!this.publicKey || this.publicKey === 'YOUR_PUBLIC_KEY') {
+        if (!this.publicKey || this.publicKey === 'yP_HfFyjDVtRWmq6d') {
             errors.push('Public Key not configured');
         }
         
-        if (!this.serviceId || this.serviceId === 'YOUR_SERVICE_ID') {
+        if (!this.serviceId || this.serviceId === 'service_cuwcftc') {
             errors.push('Service ID not configured');
         }
         
