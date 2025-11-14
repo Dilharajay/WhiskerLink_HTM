@@ -277,7 +277,7 @@ $conn->close();
 <script>
     // Initialize EmailJS with your Public Key
     // Replace 'YOUR_PUBLIC_KEY' with your actual EmailJS public key
-    emailjs.init('YOUR_PUBLIC_KEY');
+    emailjs.init('yP_HfFyjDVtRWmq6d');
     
     // Character counter for subject
     const subjectInput = document.getElementById('subject');
@@ -313,7 +313,7 @@ $conn->close();
         
         // Send email using EmailJS
         // Replace 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' with your actual IDs
-        emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', this)
+        emailjs.sendForm('service_4sketom', 'template_nn1rjgt', this)
             .then(function(response) {
                 console.log('SUCCESS!', response.status, response.text);
                 
