@@ -14,20 +14,26 @@ $error_message = '';
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get form data
-    $user_id = $_SESSION['user_id']; // Assuming user_id is stored in session
-    $motivation = isset($_POST['message']) ? trim($_POST['message']) : '';
+    $user_id = $_SESSION['user_id'];
+    $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+    $phone_no = isset($_POST['phone_no']) ? trim($_POST['phone_no']) : '';
+    $skills = isset($_POST['skills']) ? trim($_POST['skills']) : '';
     
     // Handle multiple selected interests
     $interests = isset($_POST['interests']) ? $_POST['interests'] : [];
-    $interested = implode(', ', $interests); // Convert array to comma-separated string
+    $interested = implode(', ', $interests);
     
     // Validate required fields
-    if (empty($motivation)) {
-        $error_message = "Please provide your motivation for volunteering.";
+    if (empty($interested)) {
+        $error_message = "Please select at least one area of interest.";
+    } elseif (empty($email)) {
+        $error_message = "Please provide your email address.";
+    } elseif (empty($skills)) {
+        $error_message = "Please describe your skills and experience.";
     } else {
         // Prepare SQL statement to prevent SQL injection
-        $stmt = $conn->prepare("INSERT INTO Volunteer_Application (user_id, motivation, interested, status) VALUES (?, ?, ?, 'Pending')");
-        $stmt->bind_param("iss", $user_id, $motivation, $interested);
+        $stmt = $conn->prepare("INSERT INTO Volunteer_Application (user_id, interested, skills, email, phone_no, status) VALUES (?, ?, ?, ?, ?, 'Pending')");
+        $stmt->bind_param("issss", $user_id, $interested, $skills, $email, $phone_no);
         
         if ($stmt->execute()) {
             $success_message = "Thank you for applying! Your application has been submitted successfully and is pending review.";
@@ -42,55 +48,339 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $conn->close();
 ?>
 
-<section id="volunteer-form" style="padding: 2rem 0;">
-    <div class="container" style="max-width: 600px;">
-        <h2 style="text-align: center;">Join Our Volunteer Team</h2>
-        <p style="text-align: center;">Fill out the form below to become a part of our animal rescue community. We appreciate your support!</p>
+<style>
+    .volunteer-page {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 60px 0;
+        min-height: calc(100vh - 140px);
+    }
+    
+    .volunteer-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    
+    .page-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    
+    .page-header h1 {
+        font-size: 42px;
+        color: #333;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+    }
+    
+    .page-header p {
+        font-size: 18px;
+        color: #666;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+    
+    .form-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+    
+    .form-section {
+        margin-bottom: 35px;
+        padding: 25px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border-left: 4px solid #667eea;
+    }
+    
+    .form-section h3 {
+        margin: 0 0 20px 0;
+        color: #333;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+        font-size: 15px;
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 14px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 15px;
+        font-family: inherit;
+        transition: all 0.3s;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .form-group textarea {
+        resize: vertical;
+        min-height: 120px;
+        line-height: 1.6;
+    }
+    
+    .form-group select[multiple] {
+        min-height: 180px;
+        padding: 10px;
+    }
+    
+    .form-group select[multiple] option {
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 5px;
+    }
+    
+    .form-group select[multiple] option:checked {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    
+    .form-group small {
+        display: block;
+        margin-top: 6px;
+        color: #888;
+        font-size: 13px;
+    }
+    
+    .required {
+        color: #ff6b6b;
+        margin-left: 3px;
+    }
+    
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    
+    .readonly-field {
+        background: #f5f5f5;
+        cursor: not-allowed;
+    }
+    
+    .submit-section {
+        margin-top: 35px;
+        text-align: center;
+    }
+    
+    .submit-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 16px 50px;
+        font-size: 18px;
+        font-weight: 600;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
+    }
+    
+    .submit-btn:active {
+        transform: translateY(-1px);
+    }
+    
+    .alert {
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 15px;
+        animation: slideDown 0.3s ease;
+    }
+    
+    .alert-success {
+        background: #d4edda;
+        border: 2px solid #c3e6cb;
+        color: #155724;
+    }
+    
+    .alert-error {
+        background: #f8d7da;
+        border: 2px solid #f5c6cb;
+        color: #721c24;
+    }
+    
+    .info-box {
+        background: #e7f3ff;
+        padding: 16px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border-left: 4px solid #2196F3;
+        font-size: 14px;
+        color: #0d47a1;
+    }
+    
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .page-header h1 {
+            font-size: 32px;
+        }
         
-        <?php if ($success_message): ?>
-            <div class="alert alert-success" style="padding: 1rem; margin-bottom: 1rem; background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; color: #155724;">
-                <?php echo htmlspecialchars($success_message); ?>
-            </div>
-        <?php endif; ?>
+        .form-card {
+            padding: 25px;
+        }
         
-        <?php if ($error_message): ?>
-            <div class="alert alert-error" style="padding: 1rem; margin-bottom: 1rem; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; color: #721c24;">
-                <?php echo htmlspecialchars($error_message); ?>
-            </div>
-        <?php endif; ?>
+        .form-section {
+            padding: 20px;
+        }
         
-        <form action="volunteer.php" method="post">
-            <div class="form-group">
-                <label for="name">Full Name</label>
-                <input type="text" id="name" name="name" value="<?php echo isset($_SESSION['fullname']) ? htmlspecialchars($_SESSION['fullname']) : ''; ?>" readonly style="background-color: #f5f5f5;">
-                <small style="color: #666;">Using your registered name</small>
-            </div>
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" value="<?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : ''; ?>" readonly style="background-color: #f5f5f5;">
-                <small style="color: #666;">Using your registered email</small>
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" value="<?php echo isset($_SESSION['phone']) ? htmlspecialchars($_SESSION['phone']) : ''; ?>">
-            </div>
-            <div class="form-group">
-                <label for="interests">Areas of Interest (select multiple) <span style="color: red;">*</span></label>
-                <select id="interests" name="interests[]" multiple size="5" style="height: auto;">
-                    <option value="Shelter Help">Shelter Help</option>
-                    <option value="Animal Care">Animal Care</option>
-                    <option value="Health">Animal Health</option>
-                    <option value="Transportation">Transportation</option>
-                    <option value="Fundraising & Donations">Fundraising & Donations</option>
-                </select>
-                <small style="color: #666;">Hold Ctrl (or Cmd) to select multiple options</small>
-            </div>
-            <div class="form-group">
-                <label for="message">Why do you want to volunteer? <span style="color: red;">*</span></label>
-                <textarea id="message" name="message" rows="5" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-accent" style="width: 100%;">Submit Application</button>
-        </form>
+        .contact-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<section class="volunteer-page">
+    <div class="volunteer-container">
+        <div class="page-header">
+            <h1><span>🤝</span> Join Our Volunteer Team</h1>
+            <p>Thank you for your interest in volunteering! Fill out the form below to join our compassionate community of animal rescuers.</p>
+        </div>
+        
+        <div class="form-card">
+            <?php if ($success_message): ?>
+                <div class="alert alert-success">
+                    <span style="font-size: 24px;">✓</span>
+                    <span><?php echo htmlspecialchars($success_message); ?></span>
+                </div>
+            <?php endif; ?>
+            
+            <?php if ($error_message): ?>
+                <div class="alert alert-error">
+                    <span style="font-size: 24px;">✗</span>
+                    <span><?php echo htmlspecialchars($error_message); ?></span>
+                </div>
+            <?php endif; ?>
+            
+            <form action="volunteer.php" method="post">
+                
+                <!-- Personal Information Section -->
+                <div class="form-section">
+                    <h3>👤 Personal Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" 
+                               value="<?php echo isset($_SESSION['fullname']) ? htmlspecialchars($_SESSION['fullname']) : ''; ?>" 
+                               readonly class="readonly-field">
+                        <small>This is your registered name and cannot be changed here.</small>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>ℹ️ Note:</strong> Your contact information has been pre-filled from your account. You can modify it if needed.
+                    </div>
+                    
+                    <div class="contact-grid">
+                        <div class="form-group">
+                            <label for="email">Email Address <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" 
+                                   value="<?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : ''; ?>" 
+                                   required placeholder="your@email.com">
+                            <small>We'll use this email to contact you</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone_no">Phone Number</label>
+                            <input type="tel" id="phone_no" name="phone_no" 
+                                   value="<?php echo isset($_SESSION['phone']) ? htmlspecialchars($_SESSION['phone']) : ''; ?>" 
+                                   placeholder="0771234567" maxlength="10">
+                            <small>Optional: 10-digit phone number</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Interests Section -->
+                <div class="form-section">
+                    <h3>🎯 Areas of Interest</h3>
+                    
+                    <div class="form-group">
+                        <label for="interests">What would you like to help with? <span class="required">*</span></label>
+                        <select id="interests" name="interests[]" multiple size="6" required>
+                            <option value="Shelter Help">🏠 Shelter Help - Cleaning and maintenance</option>
+                            <option value="Animal Care">🐾 Animal Care - Feeding and grooming</option>
+                            <option value="Health">💊 Animal Health - Medical assistance</option>
+                            <option value="Transportation">🚗 Transportation - Animal transport</option>
+                            <option value="Fundraising & Donations">💰 Fundraising & Donations</option>
+                            <option value="Foster Care">🏡 Foster Care - Temporary housing</option>
+                        </select>
+                        <small>Hold Ctrl (Windows) or Cmd (Mac) to select multiple options</small>
+                    </div>
+                </div>
+                
+                <!-- Skills & Experience Section -->
+                <div class="form-section">
+                    <h3>✨ Skills & Experience</h3>
+                    
+                    <div class="form-group">
+                        <label for="skills">Tell us about your skills and experience <span class="required">*</span></label>
+                        <textarea id="skills" name="skills" required 
+                                  placeholder="Please describe any relevant experience, skills, or training you have. This could include:
+• Previous volunteer work
+• Experience with animals
+• Special skills (veterinary, transportation, fundraising, etc.)
+• Why you want to volunteer with us
+• Your availability (days/hours)"></textarea>
+                        <small>Help us understand how you can contribute to our mission</small>
+                    </div>
+                </div>
+                
+                <!-- Submit Section -->
+                <div class="submit-section">
+                    <button type="submit" class="submit-btn">
+                        📝 Submit Application
+                    </button>
+                    <p style="margin-top: 15px; color: #888; font-size: 14px;">
+                        Your application will be reviewed by our team within 2-3 business days.
+                    </p>
+                </div>
+                
+            </form>
+        </div>
     </div>
 </section>
 

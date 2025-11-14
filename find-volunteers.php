@@ -16,7 +16,7 @@ $search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
 $sql = "SELECT va.*, u.fullname, u.email, u.phone, u.address 
         FROM Volunteer_Application va 
         INNER JOIN users u ON va.user_id = u.user_id 
-        WHERE va.status = 'Pending'";
+        WHERE va.status = 'Approved'";
 
 $params = array();
 $types = "";
