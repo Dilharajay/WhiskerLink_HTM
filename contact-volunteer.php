@@ -2,15 +2,6 @@
 include 'header.php'; 
 include 'db.php';
 
-// Import PHPMailer classes
-// use PHPMailer\PHPMailer\PHPMailer;
-// use PHPMailer\PHPMailer\SMTP;
-// use PHPMailer\PHPMailer\Exception;
-
-// Load Composer's autoloader
-// require 'vendor/autoload.php';
-require_once 'email-config.php';
-
 // Redirect to login page if not logged in
 if (!isset($_SESSION['loggedin'])) {
     header('Location: login.php');
@@ -41,138 +32,6 @@ if ($result->num_rows === 0) {
 
 $volunteer = $result->fetch_assoc();
 $stmt->close();
-
-$success_message = '';
-$error_message = '';
-
-// Handle form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $sender_name = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'Anonymous';
-    $sender_email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
-    $subject = isset($_POST['subject']) ? trim($_POST['subject']) : '';
-    $message = isset($_POST['message']) ? trim($_POST['message']) : '';
-    $help_type = isset($_POST['help_type']) ? trim($_POST['help_type']) : '';
-    
-    // Validate required fields
-    if (empty($subject) || empty($message)) {
-        $error_message = "Please fill in all required fields.";
-    } else {
-        // Create PHPMailer instance
-        // $mail = new PHPMailer(true);
-        
-        try {
-            // Server settings
-            $mail->isSMTP();
-            $mail->Host       = SMTP_HOST;
-            $mail->SMTPAuth   = true;
-            $mail->Username   = SMTP_USERNAME;
-            $mail->Password   = SMTP_PASSWORD;
-            $mail->SMTPSecure = SMTP_ENCRYPTION;
-            $mail->Port       = SMTP_PORT;
-            
-            // Recipients
-            $mail->setFrom(SMTP_FROM_EMAIL, SMTP_FROM_NAME);
-            $mail->addAddress($volunteer['email'], $volunteer['fullname']);
-            $mail->addReplyTo($sender_email, $sender_name);
-            
-            // Content
-            $mail->isHTML(true);
-            $mail->Subject = 'WhiskerLink: ' . $subject;
-            
-            // Get interest tags
-            $interests = array_filter(array_map('trim', explode(',', $volunteer['interested'])));
-            $interest_tags = '';
-            foreach($interests as $interest) {
-                $interest_tags .= '<span style="display: inline-block; padding: 5px 12px; background: #e7f3ff; color: #0066cc; border-radius: 12px; font-size: 12px; margin-right: 8px;">' . htmlspecialchars($interest) . '</span>';
-            }
-            
-            // HTML email body
-            $mail->Body = '
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <style>
-                    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-                    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px 20px; text-align: center; border-radius: 8px 8px 0 0; }
-                    .content { background: #f9f9f9; padding: 30px; border: 1px solid #ddd; }
-                    .volunteer-info { background: white; padding: 20px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #667eea; }
-                    .volunteer-info h3 { margin-top: 0; color: #333; }
-                    .info-row { padding: 10px 0; border-bottom: 1px solid #eee; }
-                    .info-label { font-weight: bold; color: #555; }
-                    .message-box { background: white; padding: 25px; margin: 20px 0; border-radius: 8px; border: 1px solid #ddd; }
-                    .footer { background: #333; color: white; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
-                    .button { display: inline-block; padding: 12px 30px; background: #ff6b6b; color: white; text-decoration: none; border-radius: 5px; margin: 15px 0; }
-                    .help-type-badge { display: inline-block; padding: 8px 16px; background: #ffc107; color: #000; border-radius: 20px; font-size: 14px; margin: 10px 0; }
-                </style>
-            </head>
-            <body>
-                <div class="container">
-                    <div class="header">
-                        <h1>🤝 New Volunteer Opportunity!</h1>
-                        <p>Someone needs your help!</p>
-                    </div>
-                    
-                    <div class="content">
-                        <p>Hello ' . htmlspecialchars($volunteer['fullname']) . ',</p>
-                        <p>Great news! Someone from the WhiskerLink community is interested in connecting with you for volunteer work.</p>
-                        
-                        ' . (!empty($help_type) ? '<div class="help-type-badge">Type of Help Needed: ' . htmlspecialchars($help_type) . '</div>' : '') . '
-                        
-                        <div class="volunteer-info">
-                            <h3>Your Volunteer Profile</h3>
-                            <div class="info-row">
-                                <span class="info-label">Interest Areas:</span><br>
-                                <div style="margin-top: 10px;">' . $interest_tags . '</div>
-                            </div>
-                        </div>
-                        
-                        <h3>Message from: ' . htmlspecialchars($sender_name) . '</h3>
-                        <p><strong>Email:</strong> ' . htmlspecialchars($sender_email) . '</p>
-                        <p><strong>Subject:</strong> ' . htmlspecialchars($subject) . '</p>
-                        
-                        <div class="message-box">
-                            <h4>Message:</h4>
-                            <p>' . nl2br(htmlspecialchars($message)) . '</p>
-                        </div>
-                        
-                        <p style="text-align: center;">
-                            <a href="mailto:' . htmlspecialchars($sender_email) . '" class="button">Reply to ' . htmlspecialchars($sender_name) . '</a>
-                        </p>
-                        
-                        <p><strong>How to respond:</strong> Simply reply to this email or click the button above to contact ' . htmlspecialchars($sender_name) . ' directly.</p>
-                    </div>
-                    
-                    <div class="footer">
-                        <p>This message was sent through WhiskerLink Volunteer Connect</p>
-                        <p>&copy; ' . date('Y') . ' WhiskerLink. All rights reserved.</p>
-                    </div>
-                </div>
-            </body>
-            </html>
-            ';
-            
-            // Plain text alternative
-            $mail->AltBody = "Hello " . $volunteer['fullname'] . ",\n\n";
-            $mail->AltBody .= "Someone is interested in connecting with you for volunteer work!\n\n";
-            if (!empty($help_type)) {
-                $mail->AltBody .= "Type of Help Needed: " . $help_type . "\n\n";
-            }
-            $mail->AltBody .= "Message from: " . $sender_name . " (" . $sender_email . ")\n\n";
-            $mail->AltBody .= "Subject: " . $subject . "\n\n";
-            $mail->AltBody .= "Message:\n" . $message . "\n\n";
-            $mail->AltBody .= "Reply to this email to contact them directly.";
-            
-            // Send email
-            $mail->send();
-            $success_message = "Your message has been sent successfully to " . htmlspecialchars($volunteer['fullname']) . "! They will receive your email and can reply directly to you.";
-            
-        } catch (Exception $e) {
-            $error_message = "Failed to send message. Error: {$mail->ErrorInfo}";
-        }
-    }
-}
-
 $conn->close();
 ?>
 
@@ -245,6 +104,7 @@ $conn->close();
         border-radius: 5px;
         font-size: 14px;
         font-family: inherit;
+        box-sizing: border-box;
     }
     .form-group input:focus,
     .form-group textarea:focus,
@@ -283,6 +143,53 @@ $conn->close();
         margin: 0;
         color: #0d47a1;
     }
+    .alert {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 4px;
+        display: none;
+    }
+    .alert-success {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+    }
+    .alert-error {
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+    }
+    .btn-accent {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .btn-accent:hover {
+        transform: translateY(-2px);
+    }
+    .btn-accent:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+    .spinner {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: spin 0.8s linear infinite;
+        margin-right: 8px;
+    }
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
 </style>
 
 <section id="contact-volunteer" style="padding: 2rem 0;">
@@ -291,21 +198,17 @@ $conn->close();
         
         <h1 style="text-align: center; margin-bottom: 30px;">Contact Volunteer</h1>
         
-        <?php if ($success_message): ?>
-            <div class="alert alert-success" style="padding: 1rem; margin-bottom: 1rem; background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; color: #155724;">
-                <?php echo htmlspecialchars($success_message); ?>
-                <p style="margin-top: 10px; margin-bottom: 0;">
-                    <a href="volunteer-detail.php?id=<?php echo $application_id; ?>">View Profile</a> | 
-                    <a href="find-volunteers.php">Find More Volunteers</a>
-                </p>
-            </div>
-        <?php endif; ?>
+        <div id="successAlert" class="alert alert-success">
+            <span id="successMessage"></span>
+            <p style="margin-top: 10px; margin-bottom: 0;">
+                <a href="volunteer-detail.php?id=<?php echo $application_id; ?>">View Profile</a> | 
+                <a href="find-volunteers.php">Find More Volunteers</a>
+            </p>
+        </div>
         
-        <?php if ($error_message): ?>
-            <div class="alert alert-error" style="padding: 1rem; margin-bottom: 1rem; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; color: #721c24;">
-                <?php echo htmlspecialchars($error_message); ?>
-            </div>
-        <?php endif; ?>
+        <div id="errorAlert" class="alert alert-error">
+            <span id="errorMessage"></span>
+        </div>
         
         <!-- Volunteer Summary -->
         <div class="volunteer-summary">
@@ -330,17 +233,17 @@ $conn->close();
         
         <!-- Contact Form -->
         <div class="form-container">
-            <form action="contact-volunteer.php?id=<?php echo $application_id; ?>" method="post" id="contactForm">
+            <form id="contactForm">
                 <div class="form-group">
                     <label for="sender-name">Your Name</label>
-                    <input type="text" id="sender-name" name="sender-name" 
+                    <input type="text" id="sender-name" name="sender_name" 
                            value="<?php echo isset($_SESSION['fullname']) ? htmlspecialchars($_SESSION['fullname']) : ''; ?>" 
                            readonly style="background-color: #f5f5f5;">
                 </div>
                 
                 <div class="form-group">
                     <label for="sender-email">Your Email</label>
-                    <input type="email" id="sender-email" name="sender-email" 
+                    <input type="email" id="sender-email" name="sender_email" 
                            value="<?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : ''; ?>" 
                            readonly style="background-color: #f5f5f5;">
                     <small style="color: #666;">The volunteer will reply to this email address</small>
@@ -381,7 +284,13 @@ $conn->close();
                     </div>
                 </div>
                 
-                <button type="submit" class="btn btn-accent" style="width: 100%;">
+                <!-- Hidden fields for EmailJS template -->
+                <input type="hidden" name="volunteer_name" value="<?php echo htmlspecialchars($volunteer['fullname']); ?>">
+                <input type="hidden" name="volunteer_email" value="<?php echo htmlspecialchars($volunteer['email']); ?>">
+                <input type="hidden" name="interested_areas" value="<?php echo htmlspecialchars($volunteer['interested']); ?>">
+                <input type="hidden" name="volunteer_profile_link" value="http://<?php echo $_SERVER['HTTP_HOST']; ?>/volunteer-detail.php?id=<?php echo $application_id; ?>">
+                
+                <button type="submit" class="btn-accent" id="submitBtn" style="width: 100%;">
                     📧 Send Message to Volunteer
                 </button>
             </form>
@@ -389,7 +298,20 @@ $conn->close();
     </div>
 </section>
 
+<!-- EmailJS SDK -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
 <script>
+    // EmailJS Configuration
+    const emailConfig = {
+        publicKey: 'yP_HfFyjDVtRWmq6d',
+        serviceId: 'service_cuwcftc',
+        templateId: 'template_volunteer_contact' // You'll need to create this template
+    };
+    
+    // Initialize EmailJS
+    emailjs.init(emailConfig.publicKey);
+    
     // Character counter for subject
     const subjectInput = document.getElementById('subject');
     const subjectCount = document.getElementById('subject-count');
@@ -404,6 +326,98 @@ $conn->close();
     
     messageInput.addEventListener('input', function() {
         messageCount.textContent = this.value.length;
+    });
+    
+    // Helper function to get error message
+    function getErrorMessage(error) {
+        if (!error) return 'Unknown error occurred';
+        
+        const errorText = error.text || error.message || '';
+        
+        if (errorText.includes('insufficient authentication scopes')) {
+            return 'Email service authentication error. Please contact the administrator to reconnect the email service.';
+        } else if (errorText.includes('Invalid API key') || errorText.includes('public_key')) {
+            return 'Email service configuration error. Please contact support.';
+        } else if (errorText.includes('Template not found')) {
+            return 'Email template error. Please contact support.';
+        } else if (errorText.includes('Rate limit') || errorText.includes('Too Many Requests')) {
+            return 'Too many emails sent. Please try again in a few minutes.';
+        } else if (errorText.includes('Network') || errorText.includes('Failed to fetch')) {
+            return 'Network error. Please check your internet connection and try again.';
+        } else if (errorText) {
+            return 'Error: ' + errorText;
+        } else {
+            return 'Failed to send message. Please try again or contact support.';
+        }
+    }
+    
+    // Form submission handler
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const submitBtn = document.getElementById('submitBtn');
+        const successAlert = document.getElementById('successAlert');
+        const errorAlert = document.getElementById('errorAlert');
+        
+        // Disable button and show loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner"></span>Sending...';
+        
+        // Hide previous alerts
+        successAlert.style.display = 'none';
+        errorAlert.style.display = 'none';
+        
+        // Get form data
+        const formData = new FormData(this);
+        const templateParams = {
+            to_email: formData.get('volunteer_email'),
+            volunteer_name: formData.get('volunteer_name'),
+            volunteer_email: formData.get('volunteer_email'),
+            sender_name: formData.get('sender_name'),
+            sender_email: formData.get('sender_email'),
+            help_type: formData.get('help_type') || 'Not specified',
+            subject: formData.get('subject'),
+            message: formData.get('message'),
+            interested_areas: formData.get('interested_areas'),
+            volunteer_profile_link: formData.get('volunteer_profile_link')
+        };
+        
+        // Send email using EmailJS
+        emailjs.send(emailConfig.serviceId, emailConfig.templateId, templateParams)
+            .then(function(response) {
+                console.log('✅ SUCCESS!', response.status, response.text);
+                
+                // Show success message
+                document.getElementById('successMessage').textContent = 
+                    'Your message has been sent successfully to ' + formData.get('volunteer_name') + '! They will receive your email and can reply directly to you.';
+                successAlert.style.display = 'block';
+                
+                // Reset form
+                document.getElementById('contactForm').reset();
+                subjectCount.textContent = '0';
+                messageCount.textContent = '0';
+                
+                // Scroll to success message
+                successAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '📧 Send Message to Volunteer';
+                
+            }, function(error) {
+                console.error('❌ FAILED...', error);
+                
+                // Show error message
+                document.getElementById('errorMessage').textContent = getErrorMessage(error);
+                errorAlert.style.display = 'block';
+                
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '📧 Send Message to Volunteer';
+                
+                // Scroll to error message
+                errorAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
     });
 </script>
 
