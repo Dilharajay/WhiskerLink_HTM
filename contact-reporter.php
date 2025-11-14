@@ -313,7 +313,7 @@ $conn->close();
         
         // Send email using EmailJS
         // Replace 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' with your actual IDs
-        emailjs.sendForm('service_4sketom', 'template_nn1rjgt', this)
+        emailjs.sendForm('service_cuwcftc', 'template_nn1rjgt', this)
             .then(function(response) {
                 console.log('SUCCESS!', response.status, response.text);
                 
