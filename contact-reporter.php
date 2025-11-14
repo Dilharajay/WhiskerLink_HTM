@@ -337,9 +337,18 @@ $conn->close();
             }, function(error) {
                 console.log('FAILED...', error);
                 
-                // Show error message
-                document.getElementById('errorMessage').textContent = 
-                    'Failed to send message. Please try again or contact support. Error: ' + error.text;
+                // Show error message with more details
+                let errorMsg = 'Failed to send message. ';
+                
+                if (error.text && error.text.includes('insufficient authentication scopes')) {
+                    errorMsg += 'Email service authentication error. Please contact the administrator to reconnect the email service.';
+                } else if (error.text) {
+                    errorMsg += 'Error: ' + error.text;
+                } else {
+                    errorMsg += 'Please try again or contact support.';
+                }
+                
+                document.getElementById('errorMessage').textContent = errorMsg;
                 errorAlert.style.display = 'block';
                 
                 // Re-enable button
