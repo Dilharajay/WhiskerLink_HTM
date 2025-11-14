@@ -226,11 +226,13 @@ $report = $result->fetch_assoc();
                 </div>
                 
                 <?php if (isset($_SESSION['loggedin'])): ?>
-                    <a href="contact.php?report_id=<?php echo $report['report_id']; ?>" class="btn btn-accent" style="margin-top: 20px; display: inline-block;">
-                        Offer Help
-                    </a>
+                    <div style="margin-top: 20px; display: flex; gap: 10px;">
+                        <a href="contact-reporter.php?report_id=<?php echo $report['report_id']; ?>" class="btn btn-accent" style="display: inline-block;">
+                            📧 Contact Reporter
+                        </a>
+                    </div>
                 <?php else: ?>
-                    <p style="margin-top: 20px;"><a href="login.php">Log in</a> to offer help with this case.</p>
+                    <p style="margin-top: 20px;"><a href="login.php">Log in</a> to contact the reporter about this case.</p>
                 <?php endif; ?>
             </div>
         </div>

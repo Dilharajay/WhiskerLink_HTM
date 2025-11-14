@@ -19,7 +19,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 <ul>
                     <li><a href="index.php">Home</a></li>
                     <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-                        <a href="dashboard.php">Dashboard</a>
+                        <!-- <a href="dashboard.php">Dashboard</a> -->
                         <a href="rescue-reports.php">Animals</a>
                         <a href="volunteer.php">Volunteer</a>
                         <a href="report.php">Report</a>

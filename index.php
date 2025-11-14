@@ -9,7 +9,7 @@ include 'header.php';
         <p>Connecting hearts, one paw at a time.</p>
         <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
             <p style="margin-bottom: 1rem;">Welcome back, <?php echo htmlspecialchars($_SESSION['fullname'] ?? $_SESSION['username']); ?>!</p>
-            <a href="animals.php" class="btn btn-accent">Find a Friend</a>
+            <a href="find-volunteers.php" class="btn btn-accent">Find a volunters</a>
             <a href="volunteer.php" class="btn btn-secondary">Become a Volunteer</a>
         <?php else: ?>
             <p>Please <a href="login.php" style="color: white; text-decoration: underline;">login</a> or <a href="register.php" style="color: white; text-decoration: underline;">register</a> to get started.</p>
