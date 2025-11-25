@@ -1,7 +1,5 @@
 /**
  * EmailJS Configuration
- * Centralized email settings for WhiskerLink platform
- * 
  * @package WhiskerLink
  * @version 1.0
  */
@@ -15,9 +13,7 @@ const EmailJSConfig = {
     // Template IDs for different email types
     templates: {
         contactReporter: 'template_nn1rjgt',
-        // Add more templates as needed
-        // adoptionInquiry: 'template_xxxxx',
-        // rescueAlert: 'template_yyyyy',
+        
     },
     
     // Initialize EmailJS
