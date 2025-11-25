@@ -59,7 +59,7 @@ $recent_reports = $conn->query("SELECT rr.*, u.fullname FROM Rescue_Report rr
         padding: 0 20px;
     }
     .dashboard-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #204B5C  0%, #204B5C 100%); 
         color: white;
         padding: 30px;
         border-radius: 12px;
@@ -238,8 +238,8 @@ $recent_reports = $conn->query("SELECT rr.*, u.fullname FROM Rescue_Report rr
 <section id="admin-dashboard" style="padding: 2rem 0; background: #f5f7fa;">
     <div class="admin-dashboard">
         <div class="dashboard-header">
-            <h1>🎯 Admin Dashboard</h1>
-            <p>Welcome back, <?php echo htmlspecialchars($_SESSION['fullname']); ?>! Manage your platform efficiently.</p>
+            <h1 style="color: #ffffffff;">🎯 Admin Dashboard</h1>
+            <p style="color: #ffffffff;">Welcome back, <?php echo htmlspecialchars($_SESSION['fullname']); ?>! Manage your platform efficiently.</p>
         </div>
 
         <!-- Statistics Cards -->
