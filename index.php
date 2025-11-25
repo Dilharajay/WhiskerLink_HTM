@@ -54,11 +54,15 @@ include 'header.php';
             </div>
         </div>
 
-        <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 8px; color: white;">
-            <h3 style="margin-bottom: 1rem;">Our Mission</h3>
-            <p style="font-size: 1.1rem; line-height: 1.8; max-width: 700px; margin: 0 auto;">
-                We believe every animal deserves a chance at a safe, loving life. Through technology and community collaboration, we're making rescue efforts more efficient and giving every stray, lost, or abandoned animal the best possible chance at finding their forever home.
-            </p>
+        <div style="text-align: center; margin-top: 3rem; padding: 3rem 2rem; background: linear-gradient(135deg, #ffffffff 0%, #b0c9cbf3 50%, #005779ff 100%); border-radius: 12px; color: white; box-shadow: 0 15px 35px rgba(255, 255, 255, 0.93); position: relative; overflow: hidden;">
+            <div style="position: absolute; top: -50%; right: -10%; width: 300px; height: 300px; background: rgba(255, 255, 255, 0.08); border-radius: 50%; z-index: 0;"></div>
+            <div style="position: absolute; bottom: -30%; left: -5%; width: 250px; height: 250px; background: rgba(255, 165, 137, 0.1); border-radius: 50%; z-index: 0;"></div>
+            <div style="position: relative; z-index: 1;">
+                <h3 style="margin-bottom: 1rem; font-size: 2.2rem; text-shadow: 2px 2px 4px rgba(255, 255, 255, 1);">Our Mission</h3>
+                <p style="font-size: 1.15rem; line-height: 1.9; max-width: 700px; margin: 0 auto; font-weight: 500; text-shadow: 1px 1px 2px rgba(255, 255, 255, 1);">
+                    We believe every animal deserves a chance at a safe, loving life. Through technology and community collaboration, we're making rescue efforts more efficient and giving every stray, lost, or abandoned animal the best possible chance at finding their forever home.
+                </p>
+            </div>
         </div>
     </div>
 </section>
