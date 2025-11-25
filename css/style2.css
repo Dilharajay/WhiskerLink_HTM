@@ -1,0 +1,203 @@
+/* ======== GLOBAL STYLES ======== */
+:root {
+    --brand-purple: #7b61ff;
+    --brand-orange: #ffb02e;
+    --light-purple: #e8e6ff;
+    --light-orange: #fff0d9;
+    --page-bg: #f7f6fe;
+    --text-dark: #333;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--page-bg);
+    color: var(--text-dark);
+}
+
+/* ======== NAVBAR ======== */
+.navbar {
+    background-color: var(--brand-purple);
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: 900 !important;
+}
+
+/* ======== HERO SECTION ======== */
+.hero-section {
+    background-color: var(--brand-purple);
+    color: #ffffff;
+    padding: 60px 0;
+    /* Paw prints can be added as a subtle background-image */
+    overflow: hidden;
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 5vw, 3.5rem); /* Responsive font size */
+    font-weight: 900;
+    line-height: 1.2;
+}
+
+/* Basic placeholder for complex image layout */
+.hero-image-container {
+    position: relative;
+    min-height: 300px;
+}
+.hero-img-dog {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 70%;
+    z-index: 2;
+}
+.hero-img-cat {
+    position: absolute;
+    bottom: -30px;
+    right: 0;
+    max-width: 40%;
+    z-index: 1;
+}
+
+
+/* ======== BUTTONS ======== */
+.btn-main-action {
+    background-color: var(--brand-orange);
+    color: #ffffff;
+    font-weight: 700;
+    padding: 12px 35px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    border: none;
+}
+.btn-main-action:hover {
+    background-color: #e69e29;
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+.btn-outline-main-action {
+    color: var(--brand-purple);
+    border-color: var(--brand-purple);
+    font-weight: 700;
+    padding: 10px 30px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+.btn-outline-main-action:hover {
+    background-color: var(--brand-purple);
+    color: #ffffff;
+}
+
+/* ======== "WHY US?" SECTION ======== */
+.why-us-section {
+    background-color: #ffffff;
+}
+
+.info-card .icon-circle {
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+    line-height: 70px;
+    border-radius: 50%;
+    font-size: 2rem;
+    background-color: var(--light-orange);
+}
+
+/* ======== CATALOG SECTION ======== */
+.catalog-section .nav-pills .nav-link {
+    color: var(--text-dark);
+    font-weight: 700;
+    margin: 0 5px;
+    border-radius: 50px;
+}
+.catalog-section .nav-pills .nav-link.active {
+    background-color: var(--brand-orange);
+    color: #ffffff;
+}
+
+.animal-card {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+    transition: all 0.3s ease;
+}
+.animal-card:hover {
+    transform: translateY(-10px);
+}
+.animal-card .card-price {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--brand-purple);
+}
+
+/* Style carousel controls */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: var(--brand-purple);
+    border-radius: 50%;
+    padding: 15px;
+}
+
+/* ======== GALLERY SECTION ======== */
+.gallery-img {
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+    transition: all 0.3s ease;
+}
+.gallery-img:hover {
+    transform: scale(1.03);
+}
+
+/* ======== "ABOUT" SECTION ======== */
+.about-section {
+    background-color: #ffffff;
+}
+
+/* ======== CTA / CONTACT SECTION ======== */
+.cta-box {
+    background-color: var(--light-purple);
+    border-radius: 30px;
+    padding: 40px;
+}
+.cta-box .form-control {
+    border-radius: 50px;
+    padding: 12px 20px;
+    border: none;
+}
+
+/* ======== FOOTER ======== */
+.footer-section {
+    background-color: var(--brand-purple);
+    color: #ffffff;
+}
+.footer-brand {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #ffffff;
+    text-decoration: none;
+}
+.footer-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+.footer-nav li {
+    margin: 0 15px;
+}
+.footer-nav a {
+    color: #ffffff;
+    text-decoration: none;
+}
+.social-icon {
+    color: #ffffff;
+    font-size: 1.5rem;
+    margin-left: 15px;
+    text-decoration: none;
+}
+.footer-section hr {
+    border-color: rgba(255, 255, 255, 0.2);
+}
