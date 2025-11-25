@@ -6,7 +6,7 @@ $error = '';
 
 // Redirect if already logged in
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-    header('Location: dashboard.php');
+    header('Location: index.php');
     exit;
 }
 
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['email'] = $user['email'];
                 
                 // Redirect to dashboard
-                header('Location: dashboard.php');
+                header('Location: index.php');
                 exit;
             } else {
                 $error = 'Invalid email or password.';
