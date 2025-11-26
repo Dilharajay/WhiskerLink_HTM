@@ -55,8 +55,8 @@ include 'header.php';
         </div>
 
         <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 8px; color: white;">
-            <h3 style="margin-bottom: 1rem;">Our Mission</h3>
-            <p style="font-size: 1.1rem; line-height: 1.8; max-width: 700px; margin: 0 auto;">
+            <h3 style="margin-bottom: 1rem; color: #ABE0F0">Our Mission</h3>
+            <p style="font-size: 1.1rem; line-height: 1.8; max-width: 700px; margin: 0 auto; color:#f8f9fa">
                 We believe every animal deserves a chance at a safe, loving life. Through technology and community collaboration, we're making rescue efforts more efficient and giving every stray, lost, or abandoned animal the best possible chance at finding their forever home.
             </p>
         </div>
@@ -66,7 +66,7 @@ include 'header.php';
 
 
 <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-    <section id="cta-section" style="text-align: center; padding: 2rem 0; background-color: var(--secondary-color);">
+    <section id="cta-section" style="text-align: center; padding: 2rem 0; background-color: 393D7E;">
         <div class="container">
             <h2>Have you found a lost or stray animal?</h2>
             <p>You can help by reporting it to us. Your report can save a life.</p>

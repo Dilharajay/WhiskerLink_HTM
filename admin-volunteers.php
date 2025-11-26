@@ -173,12 +173,130 @@ $result = $conn->query("SELECT va.*, u.fullname, u.email, u.phone, u.address
         border-radius: 8px;
         font-size: 11px;
     }
+    
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.5);
+    }
+    .modal-content {
+        background-color: #fefefe;
+        margin: 3% auto;
+        padding: 0;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 800px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        animation: slideIn 0.3s ease-out;
+    }
+    @keyframes slideIn {
+        from {
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    .modal-header {
+        padding: 20px 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 8px 8px 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .modal-header h2 {
+        margin: 0;
+        font-size: 24px;
+    }
+    .close {
+        color: white;
+        font-size: 32px;
+        font-weight: bold;
+        cursor: pointer;
+        line-height: 1;
+        transition: transform 0.2s;
+    }
+    .close:hover {
+        transform: scale(1.2);
+    }
+    .modal-body {
+        padding: 30px;
+        max-height: 500px;
+        overflow-y: auto;
+    }
+    .detail-section {
+        margin-bottom: 25px;
+    }
+    .detail-section h3 {
+        color: #667eea;
+        margin-bottom: 15px;
+        font-size: 18px;
+        border-bottom: 2px solid #e7f3ff;
+        padding-bottom: 8px;
+    }
+    .detail-row {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 15px;
+        margin-bottom: 12px;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 6px;
+    }
+    .detail-label {
+        font-weight: bold;
+        color: #555;
+    }
+    .detail-value {
+        color: #333;
+    }
+    .modal-footer {
+        padding: 20px 30px;
+        background: #f8f9fa;
+        border-radius: 0 0 8px 8px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        border-top: 1px solid #dee2e6;
+    }
+    .modal-footer button,
+    .modal-footer form {
+        margin: 0;
+    }
+    .btn-close-modal {
+        background: #6c757d;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    .btn-close-modal:hover {
+        background: #5a6268;
+    }
+    .modal-footer .btn-approve,
+    .modal-footer .btn-reject {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
 </style>
 
 <section id="admin-volunteers" style="padding: 2rem 0;">
     <div class="admin-container">
         <h1 style="text-align: center; margin-bottom: 10px;">Volunteer Management</h1>
-        <p style="text-align: center; color: #666; margin-bottom: 30px;">Approve or reject volunteer applications</p>
+        <p style="text-align: center; color: #666; margin-bottom: 30px;">View, approve or reject volunteer applications</p>
         
         <?php if ($success_message): ?>
             <div class="alert alert-success" style="padding: 1rem; margin-bottom: 1rem; background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; color: #155724;">
@@ -259,31 +377,9 @@ $result = $conn->query("SELECT va.*, u.fullname, u.email, u.phone, u.address
                                 <td><?php echo date('M d, Y', strtotime($app['applied_at'])); ?></td>
                                 <td>
                                     <div class="action-buttons">
-                                        <?php if ($app['status'] !== 'Approved'): ?>
-                                            <form method="POST" style="display: inline;">
-                                                <input type="hidden" name="application_id" value="<?php echo $app['application_id']; ?>">
-                                                <input type="hidden" name="action" value="approve">
-                                                <button type="submit" class="btn-approve" onclick="return confirm('Approve this application?')">
-                                                    ✓ Approve
-                                                </button>
-                                            </form>
-                                        <?php endif; ?>
-                                        
-                                        <?php if ($app['status'] !== 'Rejected'): ?>
-                                            <form method="POST" style="display: inline;">
-                                                <input type="hidden" name="application_id" value="<?php echo $app['application_id']; ?>">
-                                                <input type="hidden" name="action" value="reject">
-                                                <button type="submit" class="btn-reject" onclick="return confirm('Reject this application?')">
-                                                    ✗ Reject
-                                                </button>
-                                            </form>
-                                        <?php endif; ?>
-                                        
-                                        <?php if ($app['status'] === 'Approved'): ?>
-                                            <a href="volunteer-detail.php?id=<?php echo $app['application_id']; ?>" class="btn-view" target="_blank">
-                                                👁 View
-                                            </a>
-                                        <?php endif; ?>
+                                        <button class="btn-view" onclick="viewApplication(<?php echo htmlspecialchars(json_encode($app)); ?>)">
+                                            👁 View Details
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -300,6 +396,160 @@ $result = $conn->query("SELECT va.*, u.fullname, u.email, u.phone, u.address
         </div>
     </div>
 </section>
+
+<!-- Modal for viewing application details -->
+<div id="applicationModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 style="color: whitesmoke;">Volunteer Application Details</h2>
+            <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <!-- Content will be populated by JavaScript -->
+        </div>
+        <div class="modal-footer" id="modalFooter">
+            <!-- Action buttons will be populated by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<script>
+function viewApplication(app) {
+    const modal = document.getElementById('applicationModal');
+    const modalBody = document.getElementById('modalBody');
+    const modalFooter = document.getElementById('modalFooter');
+    
+    // Parse interests
+    const interests = app.interested ? app.interested.split(',').map(i => i.trim()).filter(i => i) : [];
+    
+    // Build modal content
+    modalBody.innerHTML = `
+        <div class="detail-section">
+            <h3>Personal Information</h3>
+            <div class="detail-row">
+                <div class="detail-label">Full Name:</div>
+                <div class="detail-value">${escapeHtml(app.fullname)}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Email:</div>
+                <div class="detail-value">${escapeHtml(app.email)}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Phone:</div>
+                <div class="detail-value">${escapeHtml(app.phone || 'N/A')}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Address:</div>
+                <div class="detail-value">${escapeHtml(app.address || 'N/A')}</div>
+            </div>
+        </div>
+        
+        <div class="detail-section">
+            <h3>Application Details</h3>
+            <div class="detail-row">
+                <div class="detail-label">Application ID:</div>
+                <div class="detail-value">#${app.application_id}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Status:</div>
+                <div class="detail-value">
+                    <span class="status-badge status-${app.status.toLowerCase()}">
+                        ${escapeHtml(app.status)}
+                    </span>
+                </div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Applied Date:</div>
+                <div class="detail-value">${new Date(app.applied_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Areas of Interest:</div>
+                <div class="detail-value">
+                    <div class="interest-tags">
+                        ${interests.map(interest => `<span class="interest-tag">${escapeHtml(interest)}</span>`).join('')}
+                    </div>
+                </div>
+            </div>
+            ${app.experience ? `
+            <div class="detail-row">
+                <div class="detail-label">Experience:</div>
+                <div class="detail-value">${escapeHtml(app.experience)}</div>
+            </div>
+            ` : ''}
+            ${app.availability ? `
+            <div class="detail-row">
+                <div class="detail-label">Availability:</div>
+                <div class="detail-value">${escapeHtml(app.availability)}</div>
+            </div>
+            ` : ''}
+            ${app.message ? `
+            <div class="detail-row">
+                <div class="detail-label">Message:</div>
+                <div class="detail-value">${escapeHtml(app.message)}</div>
+            </div>
+            ` : ''}
+        </div>
+    `;
+    
+    // Build footer with action buttons
+    let footerHTML = '<button class="btn-close-modal" onclick="closeModal()">Close</button>';
+    
+    if (app.status !== 'Approved') {
+        footerHTML += `
+            <form method="POST" style="display: inline;">
+                <input type="hidden" name="application_id" value="${app.application_id}">
+                <input type="hidden" name="action" value="approve">
+                <button type="submit" class="btn-approve" onclick="return confirm('Approve this application?')">
+                     Approve
+                </button>
+            </form>
+        `;
+    }
+    
+    if (app.status !== 'Rejected') {
+        footerHTML += `
+            <form method="POST" style="display: inline;">
+                <input type="hidden" name="application_id" value="${app.application_id}">
+                <input type="hidden" name="action" value="reject">
+                <button type="submit" class="btn-reject" onclick="return confirm('Reject this application?')">
+                     Reject
+                </button>
+            </form>
+        `;
+    }
+    
+    modalFooter.innerHTML = footerHTML;
+    
+    // Show modal
+    modal.style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('applicationModal').style.display = 'none';
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Close modal when clicking outside of it
+window.onclick = function(event) {
+    const modal = document.getElementById('applicationModal');
+    if (event.target === modal) {
+        closeModal();
+    }
+}
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+});
+</script>
 
 <?php 
 $conn->close();

@@ -237,9 +237,9 @@ $recent_reports = $conn->query("SELECT rr.*, u.fullname FROM Rescue_Report rr
 
 <section id="admin-dashboard" style="padding: 2rem 0; background: #f5f7fa;">
     <div class="admin-dashboard">
-        <div class="dashboard-header">
-            <h1>🎯 Admin Dashboard</h1>
-            <p>Welcome back, <?php echo htmlspecialchars($_SESSION['fullname']); ?>! Manage your platform efficiently.</p>
+        <div class="dashboard-header" >
+            <h1 style="color: whitesmoke;"> Admin Dashboard</h1>
+            <p style="color: whitesmoke;">Welcome back, <?php echo htmlspecialchars($_SESSION['fullname']); ?>! Manage your platform efficiently.</p>
         </div>
 
         <!-- Statistics Cards -->

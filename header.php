@@ -407,18 +407,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
             
             <nav id="main-nav">
                 <ul>
-                    <li><a href="index.php" class="<?php echo $current_page == 'index.php' ? 'active' : ''; ?>">🏠 Home</a></li>
+                    <li><a href="index.php" class="<?php echo $current_page == 'index.php' ? 'active' : ''; ?>"> Home</a></li>
                     
                     <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
                         <?php if ($is_admin): ?>
                             <li>
                                 <a href="admin-dashboard.php" class="admin-link <?php echo $current_page == 'admin-dashboard.php' ? 'active' : ''; ?>">
-                                    👑 Admin
+                                     Admin
                                 </a>
                             </li>
                         <?php endif; ?>
-                        <li><a href="rescue-reports.php" class="<?php echo $current_page == 'rescue-reports.php' ? 'active' : ''; ?>">🐕 Animals</a></li>
-                        <li><a href="find-volunteers.php" class="<?php echo $current_page == 'find-volunteers.php' ? 'active' : ''; ?>">🤝 Volunteers</a></li>
+                        <li><a href="rescue-reports.php" class="<?php echo $current_page == 'rescue-reports.php' ? 'active' : ''; ?>"> Animals</a></li>
+                        <li><a href="find-volunteers.php" class="<?php echo $current_page == 'find-volunteers.php' ? 'active' : ''; ?>"> Volunteers</a></li>
                         
                         <!-- Profile Dropdown -->
                         <li class="profile-dropdown">
@@ -436,29 +436,29 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                 
                                 <?php if ($is_admin): ?>
                                     <a href="admin-dashboard.php" class="<?php echo $current_page == 'admin-dashboard.php' ? 'active' : ''; ?>">
-                                        👑 Admin Dashboard
+                                         Admin Dashboard
                                     </a>
                                     <div class="dropdown-divider"></div>
                                 <?php endif; ?>
                                 
                                 <a href="my-submissions.php" class="<?php echo $current_page == 'my-submissions.php' ? 'active' : ''; ?>">
-                                    📋 My Submissions
+                                     My Submissions
                                 </a>
                                 <a href="volunteer.php" class="<?php echo $current_page == 'volunteer.php' ? 'active' : ''; ?>">
-                                    ✨ Join as Volunteer
+                                     Join as Volunteer
                                 </a>
                                 <a href="report.php" class="<?php echo $current_page == 'report.php' ? 'active' : ''; ?>">
-                                    📋 Report Animal
+                                     Report Animal
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a href="logout.php" class="logout-link">
-                                    🚪 Logout
+                                     Logout
                                 </a>
                             </div>
                         </li>
                     <?php else: ?>
-                        <li><a href="login.php" class="<?php echo $current_page == 'login.php' ? 'active' : ''; ?>">🔑 Login</a></li>
-                        <li><a href="register.php" class="<?php echo $current_page == 'register.php' ? 'active' : ''; ?>">✨ Register</a></li>
+                        <li><a href="login.php" class="<?php echo $current_page == 'login.php' ? 'active' : ''; ?>"> Login</a></li>
+                        <li><a href="register.php" class="<?php echo $current_page == 'register.php' ? 'active' : ''; ?>"> Register</a></li>
                     <?php endif; ?>
                 </ul>
             </nav>

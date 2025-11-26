@@ -112,7 +112,7 @@ $result = $stmt->get_result();
         box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
     .volunteer-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #2A5C6B;
         color: white;
         padding: 20px;
         text-align: center;
@@ -265,23 +265,23 @@ $result = $stmt->get_result();
                 </a>
                 <a href="find-volunteers.php?interest=Shelter Help<?php echo !empty($search_query) ? '&search=' . urlencode($search_query) : ''; ?>" 
                    class="filter-btn <?php echo $filter_interest === 'Shelter Help' ? 'active' : ''; ?>">
-                    🏠 Shelter Help
+                     Shelter Help
                 </a>
                 <a href="find-volunteers.php?interest=Animal Care<?php echo !empty($search_query) ? '&search=' . urlencode($search_query) : ''; ?>" 
                    class="filter-btn <?php echo $filter_interest === 'Animal Care' ? 'active' : ''; ?>">
-                    🐾 Animal Care
+                     Animal Care
                 </a>
                 <a href="find-volunteers.php?interest=Health<?php echo !empty($search_query) ? '&search=' . urlencode($search_query) : ''; ?>" 
                    class="filter-btn <?php echo $filter_interest === 'Health' ? 'active' : ''; ?>">
-                    💊 Health
+                     Health
                 </a>
                 <a href="find-volunteers.php?interest=Transportation<?php echo !empty($search_query) ? '&search=' . urlencode($search_query) : ''; ?>" 
                    class="filter-btn <?php echo $filter_interest === 'Transportation' ? 'active' : ''; ?>">
-                    🚗 Transportation
+                     Transportation
                 </a>
                 <a href="find-volunteers.php?interest=Fundraising & Donations<?php echo !empty($search_query) ? '&search=' . urlencode($search_query) : ''; ?>" 
                    class="filter-btn <?php echo $filter_interest === 'Fundraising & Donations' ? 'active' : ''; ?>">
-                    💰 Fundraising
+                     Fundraising
                 </a>
             </div>
             
