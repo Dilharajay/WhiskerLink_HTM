@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
 $username = "root";
-$password = "dilhara";
+$password = "";
 $dbname = "whiskerlink";
 
 // Create connection

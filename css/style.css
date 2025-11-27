@@ -166,11 +166,6 @@ nav ul li a.active::after {
     border-radius: 3px;
 }
 
-.logo{
-    height: 100px;
-    width: auto;
-}
-
 /* Buttons */
 .btn {
     display: inline-block;
