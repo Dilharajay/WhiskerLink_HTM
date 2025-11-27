@@ -248,7 +248,7 @@ $report = $result->fetch_assoc();
                 <?php if (isset($_SESSION['loggedin'])): ?>
                     <div style="margin-top: 20px; display: flex; gap: 10px;">
                         <a href="contact-reporter.php?report_id=<?php echo $report['report_id']; ?>" class="btn btn-accent" style="display: inline-block;">
-                            📧 Contact Reporter
+                             Contact Reporter
                         </a>
                     </div>
                 <?php else: ?>

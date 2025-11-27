@@ -2,17 +2,16 @@
 include 'header.php'; 
 include 'db.php';
 
-// Redirect to login page if not logged in
 if (!isset($_SESSION['loggedin'])) {
     header('Location: login.php');
     exit;
 }
 
-// Get filter parameters
+
 $filter_interest = isset($_GET['interest']) ? $_GET['interest'] : 'all';
 $search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
 
-// Build SQL query with filters
+
 $sql = "SELECT va.*, u.fullname, u.email, u.phone, u.address 
         FROM Volunteer_Application va 
         INNER JOIN users u ON va.user_id = u.user_id 
@@ -39,7 +38,7 @@ if (!empty($search_query)) {
 
 $sql .= " ORDER BY va.applied_at DESC";
 
-// Prepare and execute statement
+
 $stmt = $conn->prepare($sql);
 if (!empty($params)) {
     $stmt->bind_param($types, ...$params);
@@ -320,7 +319,7 @@ $result = $stmt->get_result();
                                 <?php if (!empty($volunteer['address'])): ?>
                                     <div class="info-item">
                                         <span class="info-icon">📍</span>
-                                        <span><?php echo htmlspecialchars($volunteer['address']); ?></span>
+                                        <span>Belihuloya</span>
                                     </div>
                                 <?php endif; ?>
                                 
@@ -343,7 +342,7 @@ $result = $stmt->get_result();
                                 View Profile
                             </a>
                             <a href="contact-volunteer.php?id=<?php echo $volunteer['application_id']; ?>" class="btn-small btn-contact">
-                                📧 Contact
+                                 Contact
                             </a>
                         </div>
                     </div>

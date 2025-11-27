@@ -169,7 +169,7 @@ $conn->close();
             
             <!-- Contact Information Section -->
             <div style="background: #fff3e0; padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #ff9800;">
-                <h3 style="margin: 0 0 20px 0; color: #333; font-size: 18px;">📞 Emergency Contact Information</h3>
+                <h3 style="margin: 0 0 20px 0; color: #333; font-size: 18px;"> Emergency Contact Information</h3>
                 
                 <div class="form-group">
                     <label for="contact-name">Contact Person Name <span style="color: red;">*</span></label>
@@ -193,10 +193,10 @@ $conn->close();
             
             <div style="display: flex; gap: 15px;">
                 <button type="submit" class="btn btn-accent" style="flex: 1; padding: 15px; font-size: 16px; font-weight: 600;">
-                    💾 Update Report
+                     Update Report
                 </button>
                 <a href="my-submissions.php" class="btn btn-secondary" style="flex: 1; padding: 15px; font-size: 16px; font-weight: 600; text-align: center; text-decoration: none;">
-                    ❌ Cancel
+                     Cancel
                 </a>
             </div>
         </form>

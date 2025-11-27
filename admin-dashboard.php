@@ -237,18 +237,12 @@ $recent_reports = $conn->query("SELECT rr.*, u.fullname FROM Rescue_Report rr
 
 <section id="admin-dashboard" style="padding: 2rem 0; background: #f5f7fa;">
     <div class="admin-dashboard">
-<<<<<<< HEAD
         <div class="dashboard-header" >
             <h1 style="color: whitesmoke;"> Admin Dashboard</h1>
             <p style="color: whitesmoke;">Welcome back, <?php echo htmlspecialchars($_SESSION['fullname']); ?>! Manage your platform efficiently.</p>
-=======
-        <div class="dashboard-header">
-            <h1 style="color: #ffffffff;">🎯 Admin Dashboard</h1>
-            <p style="color: #ffffffff;">Welcome back, <?php echo htmlspecialchars($_SESSION['fullname']); ?>! Manage your platform efficiently.</p>
->>>>>>> db419935268cfed7dbea713d4e5bb84ef5118fbd
         </div>
 
-        <!-- Statistics Cards -->
+    
         <div class="stats-grid">
             <div class="stat-card users">
                 <div class="stat-icon">👥</div>
@@ -289,7 +283,7 @@ $recent_reports = $conn->query("SELECT rr.*, u.fullname FROM Rescue_Report rr
             </div>
         </div>
 
-        <!-- Quick Actions -->
+        
         <h2 style="margin-bottom: 20px; color: #333;">⚡ Quick Actions</h2>
         <div class="quick-actions">
             <div class="action-card">
@@ -299,6 +293,7 @@ $recent_reports = $conn->query("SELECT rr.*, u.fullname FROM Rescue_Report rr
                 <a href="admin-volunteers.php" class="action-btn">Manage</a>
             </div>
             
+
             <div class="action-card">
                 <div class="action-icon">📋</div>
                 <h3>Manage Reports</h3>

@@ -20,10 +20,10 @@ const EmailJSConfig = {
     init: function() {
         if (typeof emailjs !== 'undefined') {
             emailjs.init(this.publicKey);
-            console.log('✅ EmailJS initialized successfully');
+            console.log('EmailJS initialized successfully');
             return true;
         } else {
-            console.error('❌ EmailJS library not loaded');
+            console.error('EmailJS library not loaded');
             return false;
         }
     },
@@ -32,11 +32,11 @@ const EmailJSConfig = {
     sendEmail: function(templateId, formElement, successCallback, errorCallback) {
         emailjs.sendForm(this.serviceId, templateId, formElement)
             .then(function(response) {
-                console.log('✅ Email sent successfully', response.status, response.text);
+                console.log('Email sent successfully', response.status, response.text);
                 if (successCallback) successCallback(response);
             })
             .catch(function(error) {
-                console.error('❌ Email send failed', error);
+                console.error('Email send failed', error);
                 if (errorCallback) errorCallback(error);
             });
     },
@@ -58,11 +58,11 @@ const EmailJSConfig = {
         }
         
         if (errors.length > 0) {
-            console.error('❌ EmailJS Configuration Errors:', errors);
+            console.error('EmailJS Configuration Errors:', errors);
             return false;
         }
         
-        console.log('✅ EmailJS configuration is valid');
+        console.log('EmailJS configuration is valid');
         return true;
     },
     

@@ -209,7 +209,7 @@ $current_interests = array_map('trim', explode(',', $application['interested']))
         
         <div style="text-align: center; margin-bottom: 30px;">
             <h1 style="font-size: 36px; color: #333; margin-bottom: 10px;">
-                <span>🤝</span> Edit Volunteer Application
+                <span></span> Edit Volunteer Application
             </h1>
             <p style="font-size: 16px; color: #666;">Update your volunteer application information</p>
         </div>
